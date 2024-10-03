@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Document</title>
+    <style>
+        .azul {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Selectores Jquery</h1>
+    <button id="boton1">Puklsar para algo...</button>
+    <h2 class="azul">Soy un titul azul</h2>
+    <button class="azul">Boton azul</button>
+    <p>Aprendiendo jquery 1</p>
+    <p>Aprendiendo jquery 2</p>
+    <p>Aprendiendo jquery 3</p>
+    <!--COMENTARIOS DENTRO DE ESTE ENTRONO: CONTROL + K + C-->
+    <!--DESCOMENTAR UN COMENTARIO: CONTTOL + K + U -->
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        //AQUI NUESTRO CODIGO JQUERY
+        //LA PRIEMRS LINEA DENTRO DEL JQUERY SERA QUE REALICE ACCIONES AL CARGAR LA PAGINA
+        $(document).ready(function () {
+            //alert("mi primera app");
+            //SELECTOR DE ETIQUETA HTML
+            //$("h1").hide();
+            //SELECTIOR DE ID
+            //$("#boton1").hide();
+            //PODEMOS ASOCIAR ACCIONES A OBJETOS
+            $("p").click(function () {
+                //IMPRESCINCIBLE PARA EL DESARROLLO FRON ES LANZAR MENSAJES EN CONSOLA
+                console.log("Mostando mensajes en consola Web");
+                //TENEMSO UNA PALABRA CLAVE LLAMADA THIS QUE HACE REFERNCIA AL OBJETO QUE HA REALIZADO LA LLAMADA AL METODO
+                $(this).hide();
+            })
+            $("#boton1").click(function() {
+                alert("Soy un boton");
+            })
+        })
+    </script>
+</body>
+
+</html>
