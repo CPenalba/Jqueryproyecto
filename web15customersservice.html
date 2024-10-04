@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Customers XML Service</h1>
+    <button id="botoncargarcustomers">Cargar customers</button>
+    <select id="selectcustomers"></select>
+    <button id="botoncargardepartamentos">Cargar departamentos</button>
+    <h1 id="mensaje" style="color: blue"></h1>
+    <div id="datos"></div>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#botoncargarcustomers").click(function () {
+                var url = "https://northwind.netcore.io/customers.xml";
+                $.get(url, function (data) {
+                    console.log("Leyendo servicio");
+                    var numeroElementos = $(data).find("d2p1\\:Customer").length;
+                    $("#mensaje").text("Elementos: " + numeroElementos);
+                    //recorremos los customers
+
+                    var customers = [];
+                    $(data).find("d2p1\\:Customer").each(function () {
+                        var customerData = {
+                            Address: $(this).find("d2p1\\:Address").text(),
+                            City: $(this).find("d2p1\\:City").text(),
+                            CompanyName: $(this).find("d2p1\\:CompanyName").text(),
+                            ContactName: $(this).find("d2p1\\:ContactName").text(),
+                            ContactTitle: $(this).find("d2p1\\:ContactTitle").text(),
+                            Country: $(this).find("d2p1\\:Country").text(),
+                            Fax: $(this).find("d2p1\\:Fax").text(),
+                            Id: $(this).find("d2p1\\:Id").text(),
+                            Phone: $(this).find("d2p1\\:Phone").text(),
+                            PostalCode: $(this).find("d2p1\\:PostalCode").text(),
+                            Region: $(this).find("d2p1\\:Region").text(),
+                        };
+                        customers.push(customerData);
+                        var option = $("<option>", { "text": customerData.ContactName });
+                        $("#selectcustomers").append(option);
+                    })
+
+                    $("#selectcustomers").change(function () {
+                        const valorSeleccionado = $(this).val();
+                        console.log('Has seleccionado: ' + valorSeleccionado);
+                        var customer;
+                        for (var i = 0; i < customers.length; i++) {
+                            if (customers[i].ContactName === valorSeleccionado) {
+                                customer = customers[i];
+                                break;
+                            }
+                        }
+
+                        if (customer) {
+                            $("#datos").empty();
+                            var detailsList = $("<ul>");
+                            for (var key in customer) {
+                                var listItem = $("<li>").text(key + ": " + customer[key]);
+                                detailsList.append(listItem);
+
+                            }
+                            $("#datos").append(detailsList);
+                        }
+
+
+                    })
+                })
+                console.log("Despues servicio");
+            })
+
+            //$("#botoncargardepartamentos").click(function () {
+            //var url = "https://apicruddepartamentosxml.azurewebsites.net/api/Departamentos";
+            //$.get(url, function (data) {
+            // console.log("Leyendo servicio");
+            // var numeroElementos = $(data).find("Departamento").length;
+            // $("#mensaje").text("Elementos: " + numeroElementos);
+
+            //})
+            // console.log("Despues servicio");
+            ///  })
+        })
+    </script>
+</body>
+
+</html>

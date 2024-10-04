@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Clientes XML</h1>
+    <div id=contenedor></div>
+    <div id="infoCliente"></div>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            var url = "https://apiclientesxml.azurewebsites.net/api/Clientes";
+            var clientes = [];
+            $.get(url, function (data) {
+                console.log("Leyendo servicio...");
+                $(data).find("Cliente").each(function () {
+                    var nombre = $(this).find("Nombre").text();
+                    var clientesData = {
+                        IdCliente: $(this).find("IdCliente").text(),
+                        Nombre: $(this).find("Nombre").text(),
+                        Email: $(this).find("Email").text(),
+                        PaginaWeb: $(this).find("PaginaWeb").text(),
+                        Imagen: $(this).find("Imagen").text(),
+
+                    };
+                    clientes.push(clientesData);
+
+                    var boton = $("<button>");
+                    boton.text(nombre);
+                    boton.val(nombre);
+                    $("#contenedor").append(boton);
+
+
+                    boton.click(function () {
+                        const valorSeleccionado = $(this).val();
+                        console.log('Has seleccionado: ' + valorSeleccionado);
+                        var cliente;
+                        for (var i = 0; i < clientes.length; i++) {
+                            if (clientes[i].Nombre === valorSeleccionado) {
+                                cliente = clientes[i];
+                                break;
+                            }
+                        }
+                        if (cliente) {
+                            $("#infoCliente").empty();
+                            var detailsList = $("<ul>");
+                            for (var key in cliente) {
+                                var listItem = $("<li>").text(key + ": " + cliente[key]);
+                                detailsList.append(listItem);
+                            }
+                            $("#infoCliente").append(detailsList);
+                        }
+                    })
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
