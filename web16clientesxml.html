@@ -49,12 +49,15 @@
                         }
                         if (cliente) {
                             $("#infoCliente").empty();
-                            var detailsList = $("<ul>");
-                            for (var key in cliente) {
-                                var listItem = $("<li>").text(key + ": " + cliente[key]);
-                                detailsList.append(listItem);
-                            }
-                            $("#infoCliente").append(detailsList);
+                            var infoHtml = `
+                                <div><strong>Id Cliente:</strong> ${cliente.IdCliente}</div>
+                                <div><strong>Nombre:</strong> ${cliente.Nombre}</div>
+                                <div><strong>Email:</strong> ${cliente.Email}</div>
+                                <div><strong>Página Web:</strong> <a href="${cliente.PaginaWeb}" target="_blank">${cliente.PaginaWeb}</a></div>
+                                <div><strong>Imagen:</strong><br><img src="${cliente.Imagen}"></div>
+                            `;
+                            $("#infoCliente").append(infoHtml);
+                           
                         }
                     })
                 })
