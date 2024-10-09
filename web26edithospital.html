@@ -121,9 +121,9 @@
 
     <main class="container">
         <div class="bg-body-tertiary p-5 rounded">
-            <h1>Create hospital</h1>
+            <h1>Edit hospital</h1>
             <label>Id hospital</label>
-            <input type="text" id="cajaidhospital" class="form-control" />
+            <input type="text" id="cajaidhospital" disabled class="form-control" />
             <label>Nombre</label>
             <input type="text" id="cajanombre" class="form-control" />
             <label>Direccion</label>
@@ -132,45 +132,63 @@
             <input type="text" id="cajatelefono" class="form-control" />
             <label>Camas</label>
             <input type="text" id="cajacamas" class="form-control" /><br />
-            <button id="botoninsert" class="btn btn-danger">Insertar hospital</button>
+            <button id="botonupdate" class="btn btn-info">Update hospital</button>
+
 
         </div>
     </main>
     <script src="js/jquery-3.7.1.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
     <script>
-        let urlHospital = "https://apicrudhospital.azurewebsites.net/";
+        let urlHospitales = "https://apicrudhospital.azurewebsites.net/";
         $(document).ready(function () {
-            $("#botoninsert").click(function () {
+            var params =
+                new window.URLSearchParams(window.location.search);
+            var idHospitalURL = params.get('idhospital');
+            var requestFind = "webresources/hospitales/" + idHospitalURL;
+            //buscamos un hospital y lo dibujamos en las cajas
+            $.ajax({
+                url: urlHospitales + requestFind,
+                type: "GET",
+                success: function (data) {
+                    $("#cajaidhospital").val(data.idhospital);
+                    $("#cajanombre").val(data.nombre);
+                    $("#cajadireccion").val(data.direccion);
+                    $("#cajatelefono").val(data.telefono);
+                    $("#cajacamas").val(data.camas);
+                }
+            })
+            $("#botonupdate").click(function () {
+                var requestUpdate = "webresources/hospitales/put";
+
                 var id = parseInt($("#cajaidhospital").val());
                 var nombre = $("#cajanombre").val();
                 var direccion = $("#cajadireccion").val();
                 var tlf = $("#cajatelefono").val();
                 var camas = parseInt($("#cajacamas").val());
+
                 var hospital = new Object();
                 hospital.idhospital = id;
                 hospital.nombre = nombre;
                 hospital.direccion = direccion;
                 hospital.telefono = tlf;
                 hospital.camas = camas;
-                var hospitalJSON = JSON.stringify(hospital);
-                var request = "webresources/hospitales/post";
+                var dataJSON = JSON.stringify(hospital);
+
                 $.ajax({
-                    url: urlHospital + request,
-                    type: "POST",
+                    url: urlHospitales + requestUpdate,
+                    type: "PUT",
                     contentType: "application/json",
-                    data: hospitalJSON,
+                    data: dataJSON,
                     success: function () {
-                        console.log("Insertado");
+                        console.log("Modificado");
                         //cuando insertemos nos vamos a index
                         window.location.href = "web26indexhospitales.html";
-                        
                     }
                 })
             })
         })
     </script>
-
 </body>
 
 </html>

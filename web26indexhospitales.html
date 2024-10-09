@@ -3,23 +3,18 @@
 
 <head>
     <script src="js/color-modes.js"></script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.122.0">
     <title>Fixed top navbar example · Bootstrap v5.3</title>
-
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <meta name="theme-color" content="#712cf9">
-
-
-
     <!-- Custom styles for this template -->
     <link href="css/customstyles.css" rel="stylesheet">
     <link href="css/navbar-fixed.css" rel="stylesheet">
+    <link href="css/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -42,7 +37,6 @@
                 d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
         </symbol>
     </svg>
-
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
             aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
@@ -91,7 +85,6 @@
         </ul>
     </div>
 
-
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Hospitales</a>
@@ -111,14 +104,9 @@
                         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
-
     <main class="container">
         <div class="bg-body-tertiary p-5 rounded">
             <h1>Hospitales CRUD</h1>
@@ -127,9 +115,12 @@
                     <tr>
                         <th>Id hospital</th>
                         <th>Nombre</th>
-                        <th>Direccion</th>
-                        <th>Telefono</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
                         <th>Camas</th>
+                        <th></th>
+                        <th></th>
+
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -138,9 +129,13 @@
     </main>
     <script src="js/jquery-3.7.1.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
     <script>
         let urlHospital = "https://apicrudhospital.azurewebsites.net/";
         $(document).ready(function () {
+            loadHospitales();
+        })
+        function loadHospitales() {
             var request = "/webresources/hospitales";
             $.ajax({
                 url: urlHospital + request,
@@ -155,12 +150,45 @@
                         html += "<td>" + hospital.direccion + "</td>";
                         html += "<td>" + hospital.telefono + "</td>";
                         html += "<td>" + hospital.camas + "</td>";
+                        html += "<td>";
+                        html +=
+                            "<a href='web26edithospital.html?idhospital="
+                            + hospital.idhospital + "' class='btn btn-info'>Editar</a>";
+                        html += "</td>";
+                        html += "<td>";
+                        html += "<button href='#' onclick='deleteHospital("
+                            + hospital.idhospital + ")' class='btn btn-danger'>Delete</butto>";
+                        html += "</td>";
                         html += "</tr>";
                     })
                     $("#tablahospitales tbody").html(html);
                 }
             })
-        })
+        }
+        function deleteHospital(idHospital) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var requestDelete = "webresources/hospitales/delete/"
+                        + idHospital;
+                    $.ajax({
+                        url: urlHospital + requestDelete,
+                        type: "DELETE",
+                        success: function () {
+                            console.log("Deleted");
+                            loadHospitales();
+                        }
+                    })
+                }
+            });
+        }
     </script>
 </body>
 
