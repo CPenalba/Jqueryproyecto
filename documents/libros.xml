@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <book>
+        <title>Don Quijote de la Mancha</title>
+        <author>Miguel de Cervantes</author>
+        <year>1605</year>
+        <genre>Novela</genre>
+    </book>
+    <book>
+        <title>Cien Años de Soledad</title>
+        <author>Gabriel García Márquez</author>
+        <year>1967</year>
+        <genre>Realismo mágico</genre>
+    </book>
+    <book>
+        <title>La Metamorfosis</title>
+        <author>Franz Kafka</author>
+        <year>1915</year>
+        <genre>Ficción</genre>
+    </book>
+</library>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Lectura libros</h1>
+    <select id="selectgenero"></select>
+    <table border="1" id="tablalibros">
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Autor</th>
+                <th>Año</th>
+                <th>Genero</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get("documents/libros.xml", function (data) {
+                console.log("Leyendo");
+                $(data).find("book").each(function () {
+                    var genero = $(this).find("genre").text();
+                    console.log("genero: " + genero);
+                    var option = $("<option>"
+                        , { "text": genero, "value": genero });
+                    $("#selectgenero").append(option);
+
+                })
+                $("#selectgenero").change(function () {
+                    var generoSeleccionado = $(this).val();
+                    console.log("Generoseleccioando: " + generoSeleccionado);
+                    cargarTabla(generoSeleccionado);
+                })
+
+            })
+        })
+        function cargarTabla(generoSeleccionado) {
+            var html = "";
+            $.get("documents/libros.xml", function (data) {
+                $(data).find("book").each(function () {
+                    var genero = $(this).find("genre").text();
+                    if (genero === generoSeleccionado) {
+                        console.log("Coincide");
+                        var titulo = $(this).find("title").text();
+                        var autor = $(this).find("author").text();
+                        var year = $(this).find("year").text();
+                        html += "<tr>";
+                        html += "<td>" + titulo + "</td>";
+                        html += "<td>" + autor + "</td>";
+                        html += "<td>" + year + "</td>";
+                        html += "<td>" + genero + "</td>";
+                        html += "</tr>"
+                    }
+
+                })
+                $("#tablalibros tbody").html(html);
+
+
+            })
+
+        }
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
