@@ -30,7 +30,7 @@
                     //para filtar necesitamos la siguente sintaxis: DEPT[DEPT_NO=10]
                     var filtro = "DEPT[DEPT_NO=" + id + "]";
                     //EL ID ES UNICO POR LO QUE NO HACEMOS EACH
-                    var nododept = $(data).find(filtro).first();
+                    var nododept = $(data).find(filtro).first(); //encuentra el nodo <dept>
                     var nombre = $(nododept).find("DNOMBRE").text();
                     var localidad = $(nododept).find("LOC").text();
                     $("#mensaje").text("Departamento: " + nombre + ", Localidad: " + localidad);
@@ -51,7 +51,7 @@
                         $(data).find(filtro).each(function () {
                             //var contenido = $(this).text();
                             //console.log(contenido);
-                            var nodopadre = $(this).parent();
+                            var nodopadre = $(this).parent();// Obtiene el nodo padre <DEPT> del <LOC> encontrado
                             var id = $(nodopadre).attr("DEPT_NO");
                             var nombre = $(nodopadre).find("DNOMBRE").text();
                             html += "<li>Id: " + id + ", " + nombre + "</li>";
